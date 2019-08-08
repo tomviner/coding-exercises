@@ -1,23 +1,21 @@
-function expand(row) {
-  return [0, ...row].map((e, i) => ((row[i-1] || 0) + (row[i] || 0)))
-}
-
 export class Triangle {
   constructor(n) {
-    this.n = n
-  }
-
-  get lastRow() {
-    return this.rows.slice(-1)[0]
-  }
-
-  get rows() {
-    if (this.n == 1) {
-      return [[1]]
+    let above_rows = []
+    if (n == 1) {
+      this.lastRow = [1]
     }
     else {
-      const rows_above = new Triangle(this.n -  1).rows
-      return [...rows_above, expand(rows_above.slice(-1)[0])]
+      const above = new Triangle(n - 1)
+      above_rows = above.rows
+      this.lastRow = this.expand(above.lastRow)
     }
+    this.rows = [...above_rows, this.lastRow]
+  }
+
+  expand(row) {
+    return Array.from(
+      {length: row.length + 1},
+      (_, i) => ((row[i-1] || 0) + (row[i] || 0))
+    )
   }
 }
