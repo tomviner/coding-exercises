@@ -38,8 +38,8 @@ class Solution:
         c, acc, count = {0: 1}, 0, 0
         for x in l:
             acc += x
-            c[acc] = c.get(acc, 0) + 1
             count += c.get(acc - target, 0)
+            c[acc] = c.get(acc, 0) + 1
         return count
 
     # 3rd party solution
