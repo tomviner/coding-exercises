@@ -9,7 +9,8 @@ describe('Make diamond function', () => {
   });
 
   test('test letter C', () => {
-    const result = `${['  A  ',
+    const result = `${[
+      '  A  ',
       ' B B ',
       'C   C',
       ' B B ',
@@ -17,8 +18,21 @@ describe('Make diamond function', () => {
     expect(diamond.makeDiamond('C')).toEqual(result);
   });
 
-  xtest('test letter E', () => {
-    const result = `${['    A    ',
+  test('test letter D', () => {
+    const result = `${[
+      '   A   ',
+      '  B B  ',
+      ' C   C ',
+      'D     D',
+      ' C   C ',
+      '  B B  ',
+      '   A   '].join('\n')}\n`;
+    expect(diamond.makeDiamond('D')).toEqual(result);
+  });
+
+  test('test letter E', () => {
+    const result = `${[
+      '    A    ',
       '   B B   ',
       '  C   C  ',
       ' D     D ',
@@ -28,5 +42,21 @@ describe('Make diamond function', () => {
       '   B B   ',
       '    A    '].join('\n')}\n`;
     expect(diamond.makeDiamond('E')).toEqual(result);
+  });
+
+  test('test letter F', () => {
+    const result = `${[
+      '     A     ',
+      '    B B    ',
+      '   C   C   ',
+      '  D     D  ',
+      ' E       E ',
+      'F         F',
+      ' E       E ',
+      '  D     D  ',
+      '   C   C   ',
+      '    B B    ',
+      '     A     '].join('\n')}\n`;
+    expect(diamond.makeDiamond('F')).toEqual(result);
   });
 });
