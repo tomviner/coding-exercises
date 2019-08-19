@@ -3,6 +3,7 @@ class Solution:
         return list(self.generate_results(A, queries))
 
     def generate_results(self, A, queries):
+        # speed up random access
         A = dict(enumerate(A))
 
         total_evens = sum(n for n in A.values() if not n % 2)
