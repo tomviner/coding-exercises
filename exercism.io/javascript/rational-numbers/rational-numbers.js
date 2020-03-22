@@ -1,42 +1,67 @@
 //
 // This is only a SKELETON file for the 'Rational Numbers' exercise. It's been provided as a
-// convenience to get you started writing code faster.
+// convenience to get you started writing code faste
 //
 
+ const gcd = function(a, b) {
+  if (!b) {
+    return a;
+  }
+
+  return gcd(b, a % b);
+}
+
+const R = (a, b) => new Rational(a, b).reduce()
+
 export class Rational {
-  constructor() {
-    throw new Error("Remove this statement and implement this function");
+  constructor(a, b) {
+    this.a = a
+    this.b = b
   }
 
-  add() {
-    throw new Error("Remove this statement and implement this function");
+  add({ a, b }) {
+    return R(
+      this.a * b + a * this.b,
+      this.b * b
+    )
   }
 
-  sub() {
-    throw new Error("Remove this statement and implement this function");
+  sub({ a, b }) {
+    return this.add(R(-1 * a, b))
   }
 
-  mul() {
-    throw new Error("Remove this statement and implement this function");
+  mul({ a, b }) {
+    return R(this.a * a, this.b * b)
   }
 
-  div() {
-    throw new Error("Remove this statement and implement this function");
+  div({ a, b }) {
+    return R(this.a * b, this.b * a);
   }
 
   abs() {
-    throw new Error("Remove this statement and implement this function");
+    return R(Math.abs(this.a), Math.abs(this.b));
   }
 
-  exprational() {
-    throw new Error("Remove this statement and implement this function");
+  exprational(exp) {
+    exp = Math.abs(exp);
+    return R(this.a**exp, this.b**exp);
   }
 
-  expreal() {
-    throw new Error("Remove this statement and implement this function");
+  expreal(base) {
+    const { a, b } = this;
+    return (base ** (1 / b)) ** a;
   }
 
   reduce() {
-    throw new Error("Remove this statement and implement this function");
+    let { a, b } = this;
+
+    const g = gcd(a, b);
+    a /= g;
+    b /= g;
+
+    a *= Math.sign(b)
+    b *= Math.sign(b)
+
+    return new Rational(a, b);
   }
 }
