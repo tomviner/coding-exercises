@@ -29,8 +29,13 @@
     "test": "jest --no-cache ./*",
     "watch": "jest --no-cache --watch ./*",
     "lint": "eslint .",
-    "lint-test": "eslint . && jest --no-cache ./* "
+    "lint-test": "eslint . && jest --no-cache ./* ",
+
+    "format": "npm run prettify -- --write",
+    "prettify": "prettier \"./**/*.js\""
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "prettier": "^2.0.1"
+  }
 }

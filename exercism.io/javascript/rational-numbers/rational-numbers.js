@@ -3,35 +3,32 @@
 // convenience to get you started writing code faste
 //
 
- const gcd = function(a, b) {
+const gcd = function (a, b) {
   if (!b) {
     return a;
   }
 
   return gcd(b, a % b);
-}
+};
 
-const R = (a, b) => new Rational(a, b).reduce()
+const R = (a, b) => new Rational(a, b).reduce();
 
 export class Rational {
   constructor(a, b) {
-    this.a = a
-    this.b = b
+    this.a = a;
+    this.b = b;
   }
 
   add({ a, b }) {
-    return R(
-      this.a * b + a * this.b,
-      this.b * b
-    )
+    return R(this.a * b + a * this.b, this.b * b);
   }
 
   sub({ a, b }) {
-    return this.add(R(-1 * a, b))
+    return this.add(R(-1 * a, b));
   }
 
   mul({ a, b }) {
-    return R(this.a * a, this.b * b)
+    return R(this.a * a, this.b * b);
   }
 
   div({ a, b }) {
@@ -44,7 +41,7 @@ export class Rational {
 
   exprational(exp) {
     exp = Math.abs(exp);
-    return R(this.a**exp, this.b**exp);
+    return R(this.a ** exp, this.b ** exp);
   }
 
   expreal(base) {
@@ -59,8 +56,8 @@ export class Rational {
     a /= g;
     b /= g;
 
-    a *= Math.sign(b)
-    b *= Math.sign(b)
+    a *= Math.sign(b);
+    b *= Math.sign(b);
 
     return new Rational(a, b);
   }
