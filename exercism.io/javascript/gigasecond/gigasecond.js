@@ -5,5 +5,5 @@
 const gs = 1000e9;
 
 export const gigasecond = (date) => {
-   return new Date(date.valueOf() + gs);
+   return new Date(date.getTime() + gs);
 };
