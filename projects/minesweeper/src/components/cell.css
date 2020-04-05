@@ -2,4 +2,11 @@
     width: 100px;
     height: 100px;
     float: left;
+    box-sizing: border-box;
+    border: 5px solid grey;
+    background-color: yellow;
+}
+
+.isHidden {
+
 }

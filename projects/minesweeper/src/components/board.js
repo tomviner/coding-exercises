@@ -13,8 +13,11 @@ function Board(props) {
   const cells = Array(cellCount).fill().map((_,i) =>
     <Cell />
   );
+  const widthPx = 100 * width + 1;
+  const heightPx = 100 * height + 1;
+  const style={width: widthPx, height: heightPx};
   return (
-    <div className="board">
+    <div className="board" style={style}>
       {cells}
     </div>
   )

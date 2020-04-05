@@ -21,7 +21,7 @@ props
 state
 - isHidden
 - neighbouring mine count
-- markedAsMine
+- isFlagged
 
 events
 - mark as mine
@@ -32,7 +32,7 @@ events
             - cascade to reveal neighbouring zeros
 
 render
-- isHidden & not markedAsMine: blank
-- isHidden & markedAsMine: flag
+- isHidden & not isFlagged: blank
+- isHidden & isFlagged: flag
 - not isHidden & isMine: mine
 - not isHidden & not isMine: neighbouring mine count
