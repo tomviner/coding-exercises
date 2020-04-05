@@ -26,6 +26,6 @@ clearing a float: go after floated items
     clear: both;
 
 
-recognize the height of child elements
+recognise the height of child elements
 
     overflow: hidden;
