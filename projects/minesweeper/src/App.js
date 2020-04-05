@@ -1,12 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Cell from './components/cell';
+import Board from './components/board';
 
 function App() {
   return (
     <div className="App">
-      <Cell />
+      <Board width={3} />
     </div>
   );
 }
