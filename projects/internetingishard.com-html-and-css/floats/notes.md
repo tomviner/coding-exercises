@@ -1,3 +1,5 @@
+https://www.internetingishard.com/html-and-css/floats/
+
 box model: content, padding, border, margin
 
 minimal CSS reset:
