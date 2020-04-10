@@ -5,7 +5,7 @@ import './board.css';
 const rand = (chance) => (Math.random() < chance)
 
 function Board(props) {
-  const { width } = props;
+  const { width, mineProb } = props;
   const height = width;
   const cellCount = width * height;
 
@@ -13,7 +13,7 @@ function Board(props) {
   const [hideGrid, setHideGrid] = useState(null);
 
   const cells = Array(cellCount).fill().map((_, i) => {
-    return <Cell isMine={rand(0.4)} />
+    return <Cell isMine={rand(mineProb)} mineCount={3} />
   });
   const widthPx = 100 * width + 1;
   const heightPx = 100 * height + 1;

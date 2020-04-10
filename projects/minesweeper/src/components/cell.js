@@ -8,8 +8,14 @@ function Cell(props) {
   const [isFlagged, setIsFlagged] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
+  const onClick = (e) => {
+    console.log('onClick', isHidden);
+    isFlagged || setIsHidden(false);
+    e.preventDefault();
+  }
+
   const onRightClick = (e) => {
-    console.log(e);
+    console.log('onRightClick', isFlagged);
     setIsFlagged(!isFlagged);
     e.preventDefault();
   }
@@ -20,39 +26,44 @@ function Cell(props) {
       style={{
         backgroundColor: isHidden ? 'lightgrey' : 'white',
       }}
-      onClick={(e) => {console.log(e.type); setIsHidden(!isHidden)}}
     >
       {
         isHidden ?
-          <ActiveCell isFlagged={isFlagged} onRightClick={onRightClick} /> :
-          <InactiveCell isMine={isMine} />
+          <ActiveCell isFlagged={isFlagged} onClick={onClick} onRightClick={onRightClick} /> :
+          <InactiveCell isMine={isMine} mineCount={mineCount} />
       }
     </div>
   );
 }
 
 function ActiveCell(props) {
-  const { onRightClick } = props;
-  const [isFlagged, setFlagged] = useState(props.isFlagged);
+  const { isFlagged, onClick, onRightClick } = props;
+  const content = isFlagged ? '🚩' : '?';
 
-  const content = isFlagged ? '🚩' : '-';
-
-  return <div onContextMenu={onRightClick} />
+  return (
+    <div
+      className="active-cell"
+      onClick={onClick}
+      onContextMenu={onRightClick}
+    >
+      {content}
+    </div>
+  );
 }
 
 function InactiveCell(props) {
   const { isMine, mineCount } = props;
 
-  // isGameOver
+  const content = isMine ? '💣' : mineCount;
 
-  if (isMine) {
-    // mine
-    return '💣'
-  } else {
-    // neighbouring mine count
-    return '3'
-  }
+  return (
+    <div
+      className="inactive-cell"
+      onContextMenu={(e) => e.preventDefault()}
+    >
+      {content}
+    </div>
+  )
 }
-
 
 export default Cell;
