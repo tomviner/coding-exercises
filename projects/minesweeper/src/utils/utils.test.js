@@ -1,13 +1,10 @@
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 
-import { range2d } from './utils';
+import { range2d, rand, sum } from './utils';
 
 describe('2d range', () => {
   test('returns all coord pairs', () => {
-    console.log(range2d);
-    const z = range2d(2, 3);
-    console.log(z);
-    expect(z).toEqual(
+    expect(range2d(2, 3)).toEqual(
       [
         [0, 0],
         [0, 1],
@@ -17,5 +14,23 @@ describe('2d range', () => {
         [1, 2],
       ]
     );
+  });
+});
+
+
+describe('sum', () => {
+  test('returns sums of numbers in array', () => {
+    expect(sum([1, 2, 3, -10])).toEqual(-4);
+  });
+});
+
+
+describe('rand', () => {
+  test('returns certain chance as true', () => {
+    expect(rand(1)).toEqual(true);
+  });
+
+  test('returns hopeless chance as false', () => {
+    expect(rand(0)).toEqual(false);
   });
 });

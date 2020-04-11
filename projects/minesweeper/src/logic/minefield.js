@@ -27,10 +27,6 @@ export const generate = (width, height, mineProb) =>  {
     countMap[z] = countAround(z);
   });
 
-  console.log(
-    Object.entries(mineMap),
-    Object.entries(countMap),
-  );
   return {
     'mines': mineMap,
     'counts': countMap,
