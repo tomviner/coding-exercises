@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './cell.css';
 
 function Cell(props) {
@@ -22,7 +22,7 @@ function Cell(props) {
 
   return (
     <div
-      className="cell"
+      className="cell-wrapper"
       style={{
         backgroundColor: isHidden ? 'lightgrey' : 'white',
       }}
@@ -42,7 +42,7 @@ function ActiveCell(props) {
 
   return (
     <div
-      className="active-cell"
+      className="cell active-cell"
       onClick={onClick}
       onContextMenu={onRightClick}
     >
@@ -58,7 +58,7 @@ function InactiveCell(props) {
 
   return (
     <div
-      className="inactive-cell"
+      className="cell inactive-cell"
       onContextMenu={(e) => e.preventDefault()}
     >
       {content}

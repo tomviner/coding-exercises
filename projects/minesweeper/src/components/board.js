@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
+import { generate } from '../logic/minefield';
+import { range2d } from '../utils/utils';
 import Cell from './cell';
 import './board.css';
 
-const rand = (chance) => (Math.random() < chance)
 
 function Board(props) {
   const { width, mineProb } = props;
   const height = width;
-  const cellCount = width * height;
 
-  const [mineGrid, setMineGrid] = useState(null);
-  const [hideGrid, setHideGrid] = useState(null);
+  const { mines, counts } = generate(width, height, mineProb);
 
-  const cells = Array(cellCount).fill().map((_, i) => {
-    return <Cell isMine={rand(mineProb)} mineCount={3} />
+  // const [hideGrid, setHideGrid] = useState(null);
+
+  const cells = range2d(width, height).map(z => {
+    return <Cell isMine={mines[z]} mineCount={counts[z]} key={z} />
   });
   const widthPx = 100 * width + 1;
   const heightPx = 100 * height + 1;

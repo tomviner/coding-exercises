@@ -12,6 +12,7 @@
     "react-table": "^7.0.0"
   },
   "devDependencies": {
+    "jest-mock-random": "^1.0.3",
     "prettier": "^2.0.1"
   },
   "scripts": {
