@@ -9,6 +9,7 @@
 
 props
 - width
+- mineProb
 
 state
 - grid of mines and neighbouring mine counts
@@ -17,11 +18,12 @@ state
 
 props
 - isMine
+- mineCount
 
 state
 - isHidden
-- neighbouring mine count
 - isFlagged
+- isGameOver
 
 events
 - mark as mine
@@ -31,8 +33,35 @@ events
         - if count is zero:
             - cascade to reveal neighbouring zeros
 
+Active Cell
+
+props
+- isFlagged
+- onClick
+- onRightClick
+
 render
-- isHidden & not isFlagged: blank
-- isHidden & isFlagged: flag
-- not isHidden & isMine: mine
-- not isHidden & not isMine: neighbouring mine count
+- not isFlagged: blank
+- isFlagged: flag
+
+render gameover
+- not isFlagged: reveal incorrect mine or count
+- isFlagged: flag: reveal correct mine, or incorrect flag
+
+correct = gameover & mine and flag
+incorrect = gameover & flag != mine
+
+Inactive Cell
+
+props
+- isMine
+- mineCount
+
+render
+- isMine: mine (causes gameover, so not shown)
+- not isMine: neighbouring mine count
+
+
+render gameover
+- isMine: mine (incorrect by lack of flag)
+- not isMine: neighbouring mine count

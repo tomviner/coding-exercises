@@ -1,67 +1,44 @@
 import React, { useState } from 'react';
+import { getClsNames } from '../utils/utils';
 import './cell.css';
 
 function Cell(props) {
-  const { isMine, mineCount } = props;
+  const { isMine, mineCount, isGameOver, setIsGameOver } = props;
 
-  const [isHidden, setIsHidden] = useState(true);
+  const [isRevealed, setIsRevealed] = useState(false);
   const [isFlagged, setIsFlagged] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
 
   const onClick = e => {
-    console.log('onClick', isHidden);
-    isFlagged || setIsHidden(false);
+    if (!isGameOver && !isFlagged) {
+      setIsRevealed(true);
+      if (isMine) {
+        setIsGameOver(true);
+      }
+    }
     e.preventDefault();
   };
 
   const onRightClick = e => {
-    console.log('onRightClick', isFlagged);
     setIsFlagged(!isFlagged);
     e.preventDefault();
   };
 
-  return (
-    <div
-      className="cell-wrapper"
-      style={{
-        backgroundColor: isHidden ? 'lightgrey' : 'white',
-      }}
-    >
-      {isHidden ? (
-        <ActiveCell
-          isFlagged={isFlagged}
-          onClick={onClick}
-          onRightClick={onRightClick}
-        />
-      ) : (
-        <InactiveCell isMine={isMine} mineCount={mineCount} />
-      )}
-    </div>
-  );
-}
+  let content, correct = false, incorrect = false;
 
-function ActiveCell(props) {
-  const { isFlagged, onClick, onRightClick } = props;
-  const content = isFlagged ? '🚩' : '?';
+  if (isRevealed || isGameOver) {
+    content = isMine ? '💣' : mineCount;
+    if (isGameOver) {
+      correct = isFlagged && isMine;
+      incorrect = isFlagged !== isMine;
+    }
+  } else {
+    content = isFlagged ? '🚩' : '?';
+  }
+
+  const classNames = getClsNames({ isRevealed, correct, incorrect }, 'cell')
 
   return (
-    <div
-      className="cell active-cell"
-      onClick={onClick}
-      onContextMenu={onRightClick}
-    >
-      {content}
-    </div>
-  );
-}
-
-function InactiveCell(props) {
-  const { isMine, mineCount } = props;
-
-  const content = isMine ? '💣' : mineCount;
-
-  return (
-    <div className="cell inactive-cell" onContextMenu={e => e.preventDefault()}>
+    <div className={classNames} onClick={onClick} onContextMenu={onRightClick}>
       {content}
     </div>
   );

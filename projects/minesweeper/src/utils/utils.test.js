@@ -1,6 +1,6 @@
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 
-import { range2d, rand, sum } from './utils';
+import { range2d, rand, sum, getClsNames } from './utils';
 
 describe('2d range', () => {
   test('returns all coord pairs', () => {
@@ -28,5 +28,19 @@ describe('rand', () => {
 
   test('returns hopeless chance as false', () => {
     expect(rand(0)).toEqual(false);
+  });
+});
+
+describe('getClsNames', () => {
+  test('filters by value', () => {
+    const trueName = true;
+    const falseName = false;
+    expect(getClsNames({ trueName, falseName })).toEqual('trueName');
+  });
+
+  test('returns static names too', () => {
+    expect(getClsNames({ dyn: true }, 'static other')).toEqual(
+      'static other dyn'
+    );
   });
 });

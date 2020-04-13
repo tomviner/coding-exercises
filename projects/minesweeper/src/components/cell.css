@@ -1,13 +1,20 @@
-.cell-wrapper {
+.cell {
     width: 100px;
     height: 100px;
     float: left;
     box-sizing: border-box;
     border: 5px solid grey;
-    background-color: yellow;
+    background-color: lightgrey;
 }
 
-.cell {
-    height: 100%;
+.cell.isRevealed {
+    background-color: white;
 }
 
+.cell.correct {
+    background-color: green;
+}
+
+.cell.incorrect {
+    background-color: red;
+}
