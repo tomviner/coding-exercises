@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Board from './board';
 import { generate } from '../logic/minefield';
+import { sum } from '../utils/utils';
 import './game.css';
 
 function Game(props) {
@@ -14,33 +15,39 @@ function Game(props) {
   const createNewMaps = () => generate(width, height, mineProb);
   const [maps, setMaps] = useState(createNewMaps);
 
+  useEffect(
+    () => {
+      setMaps(generate(width, height, mineProb));
+    },
+    [width, height, mineProb],
+  );
+
   const gameOverButton = e => {
     setIsGameOver(!isGameOver);
   };
 
   const widthIncButton = e => {
     setWidth(width + 1);
-    setMaps(createNewMaps);
   };
 
   const widthDecButton = e => {
     if (width > 1) {
       setWidth(width - 1);
-      setMaps(createNewMaps);
     }
   };
 
+  const roundToTenth = n => Math.round(10 * n) / 10
+
   const mineProbDecButton = e => {
-    setMineProb(Math.max(mineProb - 0.1, 0));
-    setMaps(createNewMaps);
+    setMineProb(Math.max(roundToTenth(mineProb - 0.1), 0));
   };
 
   const mineProbIncButton = e => {
-    setMineProb(Math.min(mineProb + 0.1, 1));
-    setMaps(createNewMaps);
+    setMineProb(Math.min(roundToTenth(mineProb + 0.1), 1));
   };
 
   const newGameButton = e => {
+    setIsGameOver(false);
     setMaps(createNewMaps);
   }
 
@@ -48,23 +55,28 @@ function Game(props) {
   return (
     <div>
       <div>
-        Size
+        Size:{' '}
         <button onClick={widthDecButton}>-</button>
         {width}
         <button onClick={widthIncButton}>+</button>
       </div>
       <div>
-        Mines density
+        Mines density:{' '}
         <button onClick={mineProbDecButton}>-</button>
         {mineProb}
         <button onClick={mineProbIncButton}>+</button>
       </div>
       <div>
-        gameover
+        Mines:{' '}
+        {sum(Object.values(maps.mines))}
+      </div>
+      <div>
+        Gameover:{' '}
         <button onClick={gameOverButton}>{isGameOver.toString()}</button>
       </div>
       <div>
-        <button onClick={newGameButton}>new game</button>
+        New game:{' '}
+        <button onClick={newGameButton}>go</button>
       </div>
       <Board
         width={width}

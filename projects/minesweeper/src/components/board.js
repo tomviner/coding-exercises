@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { range2d } from '../utils/utils';
 import Cell from './cell';
