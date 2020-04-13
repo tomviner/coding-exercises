@@ -8,17 +8,17 @@ function Cell(props) {
   const [isFlagged, setIsFlagged] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const onClick = (e) => {
+  const onClick = e => {
     console.log('onClick', isHidden);
     isFlagged || setIsHidden(false);
     e.preventDefault();
-  }
+  };
 
-  const onRightClick = (e) => {
+  const onRightClick = e => {
     console.log('onRightClick', isFlagged);
     setIsFlagged(!isFlagged);
     e.preventDefault();
-  }
+  };
 
   return (
     <div
@@ -27,11 +27,15 @@ function Cell(props) {
         backgroundColor: isHidden ? 'lightgrey' : 'white',
       }}
     >
-      {
-        isHidden ?
-          <ActiveCell isFlagged={isFlagged} onClick={onClick} onRightClick={onRightClick} /> :
-          <InactiveCell isMine={isMine} mineCount={mineCount} />
-      }
+      {isHidden ? (
+        <ActiveCell
+          isFlagged={isFlagged}
+          onClick={onClick}
+          onRightClick={onRightClick}
+        />
+      ) : (
+        <InactiveCell isMine={isMine} mineCount={mineCount} />
+      )}
     </div>
   );
 }
@@ -57,13 +61,10 @@ function InactiveCell(props) {
   const content = isMine ? '💣' : mineCount;
 
   return (
-    <div
-      className="cell inactive-cell"
-      onContextMenu={(e) => e.preventDefault()}
-    >
+    <div className="cell inactive-cell" onContextMenu={e => e.preventDefault()}>
       {content}
     </div>
-  )
+  );
 }
 
 export default Cell;

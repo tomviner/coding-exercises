@@ -4,26 +4,22 @@ import { range2d, rand, sum } from './utils';
 
 describe('2d range', () => {
   test('returns all coord pairs', () => {
-    expect(range2d(2, 3)).toEqual(
-      [
-        [0, 0],
-        [0, 1],
-        [0, 2],
-        [1, 0],
-        [1, 1],
-        [1, 2],
-      ]
-    );
+    expect(range2d(2, 3)).toEqual([
+      [0, 0],
+      [0, 1],
+      [0, 2],
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ]);
   });
 });
-
 
 describe('sum', () => {
   test('returns sums of numbers in array', () => {
     expect(sum([1, 2, 3, -10])).toEqual(-4);
   });
 });
-
 
 describe('rand', () => {
   test('returns certain chance as true', () => {
