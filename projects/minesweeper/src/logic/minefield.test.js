@@ -1,25 +1,25 @@
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 
-import { generate } from './minefield';
+import { generateField, Revealer } from './minefield';
 
 describe('minefield generation', () => {
-  test('generate small field safe from mines', () => {
-    expect(generate(1, 1, 0)).toEqual({
+  test('generateField small field safe from mines', () => {
+    expect(generateField(1, 1, 0)).toEqual({
       mines: { '0,0': false },
       counts: { '0,0': 0 },
     });
   });
 
-  test('generate small field full of mines', () => {
-    expect(generate(1, 1, 1)).toEqual({
+  test('generateField small field full of mines', () => {
+    expect(generateField(1, 1, 1)).toEqual({
       mines: { '0,0': true },
       counts: { '0,0': 0 },
     });
   });
 
-  test('generate medium field with one mine', () => {
+  test('generateField medium field with one mine', () => {
     mockRandom([0.001, 0.999, 0.999, 0.999]);
-    expect(generate(2, 2, 0.5)).toEqual({
+    expect(generateField(2, 2, 0.5)).toEqual({
       mines: {
         '0,0': true,
         '0,1': false,
@@ -36,9 +36,9 @@ describe('minefield generation', () => {
     resetMockRandom();
   });
 
-  test('generate medium field with three mines', () => {
+  test('generateField medium field with three mines', () => {
     mockRandom([0.001, 0.001, 0.001, 0.999]);
-    expect(generate(2, 2, 0.5)).toEqual({
+    expect(generateField(2, 2, 0.5)).toEqual({
       mines: {
         '0,0': true,
         '0,1': true,
@@ -53,5 +53,11 @@ describe('minefield generation', () => {
       },
     });
     resetMockRandom();
+  });
+});
+
+describe('Revealer', () => {
+  test('Inialise revealer', () => {
+    expect(new Revealer(1, 1)._map).toEqual({ '0,0': false });
   });
 });

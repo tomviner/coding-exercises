@@ -1,6 +1,6 @@
 import { range2d, rand, sum } from '../utils/utils';
 
-export const generate = (width, height, mineProb) => {
+export const generateField = (width, height, mineProb) => {
   // cast Array keys to Strings
   const mineMap = {};
   const countMap = {};
@@ -31,3 +31,19 @@ export const generate = (width, height, mineProb) => {
     counts: countMap,
   };
 };
+
+export class Revealer {
+  constructor(height, width) {
+    const coords = range2d(width, height);
+
+    this._map = Object.fromEntries(coords.map(z => [z, false]));
+  }
+
+  isRevealed(z) {
+    return this._map[z];
+  }
+
+  setRevealed(z, bool = true) {
+    this._map[z] = bool;
+  }
+}

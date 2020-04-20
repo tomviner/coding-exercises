@@ -65,3 +65,22 @@ render
 render gameover
 - isMine: mine (incorrect by lack of flag)
 - not isMine: neighbouring mine count
+
+
+Look
+
+- unrevealed: highlight & shaddow
+- revealed: dark grey, thin borders
+
+- incorrect flag: crossed out
+- correcy flag: leave flag
+
+Game play
+
+- initial reveal should decide field:
+    - pref 0 neighbouring
+    - not a mine
+
+- revealing a 0, also reveals:
+    - all touching 0s
+    - a surrounding border of counts
