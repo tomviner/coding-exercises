@@ -1,30 +1,17 @@
-import { range2d, rand, sum } from '../utils/utils';
+import { List, Set } from 'immutable';
+import { range2d, rand, sum, mapToFunction, mapToValue } from '../utils/utils';
 
 export const generateField = (width, height, mineProb) => {
-  // cast Array keys to Strings
-  const mineMap = {};
-  const countMap = {};
   const coords = range2d(width, height);
 
-  coords.forEach(z => {
-    mineMap[z] = rand(mineProb);
-  });
+  const mineMap = mapToFunction(coords, _ => rand(mineProb));
 
-  // prettier-ignore
-  const neighbours = ([x, y]) => [
-    [x-1, y-1], [x, y-1], [x+1, y-1],
-    [x-1, y],             [x+1, y],
-    [x-1, y+1], [x, y+1], [x+1, y+1],
-  ];
+  // When outside the boundary it'c `undefined || 0`
+  const isMine = z => mineMap.get(z) || 0;
 
-  // When outside the boundary it's `undefined || 0`
-  const isMine = z => mineMap[z] || 0;
+  const countAround = z => sum(neighbours(z, coords).map(isMine));
 
-  const countAround = z => sum(neighbours(z).map(isMine));
-
-  coords.forEach(z => {
-    countMap[z] = countAround(z);
-  });
+  const countMap = mapToFunction(coords, countAround);
 
   return {
     mines: mineMap,
@@ -32,18 +19,37 @@ export const generateField = (width, height, mineProb) => {
   };
 };
 
-export class Revealer {
-  constructor(height, width) {
-    const coords = range2d(width, height);
+export const getBoolMap = (width, height, value = false) => mapToValue(range2d(width, height), value)
 
-    this._map = Object.fromEntries(coords.map(z => [z, false]));
-  }
 
-  isRevealed(z) {
-    return this._map[z];
-  }
+// prettier-ignore
+export const neighbourCoords = ([x, y]) => (
+  [
+    [x-1, y-1], [x, y-1], [x+1, y-1],
+    [x-1, y],             [x+1, y],
+    [x-1, y+1], [x, y+1], [x+1, y+1],
+  ].map(List)
+);
 
-  setRevealed(z, bool = true) {
-    this._map[z] = bool;
+export const neighbours = (z, coords) =>
+  neighbourCoords(z).filter(c => coords.includes(c));
+
+export const neighboursForAll = (zs, coords) =>
+  Set(zs.flatMap(c => neighbours(c, coords)));
+
+export const neighbouringZeros = (z, coords, counts) => {
+  let fronteer = Set([z]);
+  let toReveal = Set();
+  let lastFrontier
+
+  while (fronteer.size > 0) {
+    lastFrontier = Set(fronteer)
+    fronteer = Set()
+
+    fronteer = neighboursForAll(lastFrontier, coords)
+      .filterNot(c => toReveal.includes(c))
+      .filter(c => counts.get(c) === 0)
+    toReveal = toReveal.union(fronteer)
   }
-}
+  return toReveal;
+};

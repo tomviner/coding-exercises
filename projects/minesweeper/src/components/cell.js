@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { getClsNames } from '../utils/utils';
 import { cellSize } from '../utils/constants';
+import { List } from 'immutable';
 import './cell.css';
 
 function Cell(props) {
@@ -9,16 +10,19 @@ function Cell(props) {
     mineCount,
     isRevealed,
     setIsRevealed,
+    isFlagged,
+    setIsFlagged,
     isGameOver,
     setIsGameOver,
+    z,
   } = props;
-
-  // const [isRevealed, setIsRevealed] = useState(false);
-  const [isFlagged, setIsFlagged] = useState(false);
+  if (z === List([0, 0])) {
+    console.log('render Cell. isRevealed', isRevealed);
+  }
 
   const onClick = e => {
     if (!isGameOver && !isFlagged) {
-      setIsRevealed(true);
+      setIsRevealed();
       if (isMine) {
         setIsGameOver(true);
       }

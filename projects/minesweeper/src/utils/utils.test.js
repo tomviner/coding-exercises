@@ -1,17 +1,20 @@
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
+import { List } from 'immutable';
 
 import { range2d, rand, sum, getClsNames } from './utils';
 
 describe('2d range', () => {
   test('returns all coord pairs', () => {
-    expect(range2d(2, 3)).toEqual([
-      [0, 0],
-      [0, 1],
-      [0, 2],
-      [1, 0],
-      [1, 1],
-      [1, 2],
-    ]);
+    expect(range2d(2, 3)).toEqual(
+      List([
+        List([0, 0]),
+        List([0, 1]),
+        List([0, 2]),
+        List([1, 0]),
+        List([1, 1]),
+        List([1, 2]),
+      ])
+    );
   });
 });
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 import Board from './board';
-import { generateField, Revealer } from '../logic/minefield';
+import { generateField, getBoolMap } from '../logic/minefield';
 import { sum } from '../utils/utils';
 import './game.css';
 
 function Game(props) {
+  console.log('render Game');
   const [width, setWidth] = useState(9);
   const [isGameOver, setIsGameOver] = useState(false);
   const [mineProb, setMineProb] = useState(0.1);
@@ -13,13 +14,16 @@ function Game(props) {
   const height = width;
 
   const createNewMaps = () => generateField(width, height, mineProb);
-  const [maps, setMaps] = useState(createNewMaps);
+  const [{ mines, counts }, setMaps] = useState(createNewMaps);
 
-  const revealer = new Revealer(width, height);
-  // const [revealer, setRevealMap] = useState(revealer);
+  const createNewBoolMap = () => getBoolMap(width, height);
+  const [revealMap, setRevealMap] = useState(createNewBoolMap);
+  const [flagMap, setFlagMap] = useState(createNewBoolMap);
 
   useEffect(() => {
     setMaps(generateField(width, height, mineProb));
+    setRevealMap(getBoolMap(width, height));
+    setFlagMap(getBoolMap(width, height));
   }, [width, height, mineProb]);
 
   const gameOverButton = e => {
@@ -49,6 +53,8 @@ function Game(props) {
   const newGameButton = e => {
     setIsGameOver(false);
     setMaps(createNewMaps);
+    setRevealMap(createNewBoolMap);
+    setFlagMap(createNewBoolMap);
   };
 
   return (
@@ -63,7 +69,7 @@ function Game(props) {
         {mineProb}
         <button onClick={mineProbIncButton}>+</button>
       </div>
-      <div>Mines: {sum(Object.values(maps.mines))}</div>
+      <div>Mines: {sum(mines.valueSeq())}</div>
       <div>
         Gameover:{' '}
         <button onClick={gameOverButton}>{isGameOver.toString()}</button>
@@ -74,8 +80,12 @@ function Game(props) {
       <Board
         width={width}
         height={height}
-        maps={maps}
-        revealer={revealer}
+        mines={mines}
+        counts={counts}
+        revealMap={revealMap}
+        setRevealMap={setRevealMap}
+        flagMap={flagMap}
+        setFlagMap={setFlagMap}
         isGameOver={isGameOver}
         setIsGameOver={setIsGameOver}
       />
