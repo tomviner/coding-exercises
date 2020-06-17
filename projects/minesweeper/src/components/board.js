@@ -71,8 +71,8 @@ function Board(props) {
       />
     );
   });
-  const widthPx = cellSize * width + 1;
-  const heightPx = cellSize * height + 1;
+  const widthPx = cellSize * width;
+  const heightPx = cellSize * height;
   const style = { width: widthPx, height: heightPx };
   return (
     <div className="board" style={style}>
