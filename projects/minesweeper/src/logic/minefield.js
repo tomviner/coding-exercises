@@ -19,8 +19,8 @@ export const generateField = (width, height, mineProb) => {
   };
 };
 
-export const getBoolMap = (width, height, value = false) => mapToValue(range2d(width, height), value)
-
+export const getBoolMap = (width, height, value = false) =>
+  mapToValue(range2d(width, height), value);
 
 // prettier-ignore
 export const neighbourCoords = ([x, y]) => (
@@ -40,16 +40,16 @@ export const neighboursForAll = (zs, coords) =>
 export const neighbouringZeros = (z, coords, counts) => {
   let fronteer = Set([z]);
   let toReveal = Set();
-  let lastFrontier
+  let lastFrontier;
 
   while (fronteer.size > 0) {
-    lastFrontier = Set(fronteer)
-    fronteer = Set()
+    lastFrontier = Set(fronteer);
+    fronteer = Set();
 
     fronteer = neighboursForAll(lastFrontier, coords)
       .filterNot(c => toReveal.includes(c))
-      .filter(c => counts.get(c) === 0)
-    toReveal = toReveal.union(fronteer)
+      .filter(c => counts.get(c) === 0);
+    toReveal = toReveal.union(fronteer);
   }
   return toReveal;
 };

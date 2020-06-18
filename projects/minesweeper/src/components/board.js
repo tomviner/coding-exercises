@@ -24,35 +24,33 @@ function Board(props) {
   const coords = range2d(width, height);
 
   const checkGameOver = (revealMap, flagMap) => {
-    const untouched = coords.filter(c =>
-      (!(flagMap.get(c) || revealMap.get(c)))
-    )
+    const untouched = coords.filter(c => !(flagMap.get(c) || revealMap.get(c)));
 
     if (untouched.size === 0) {
-      setIsGameOver(true)
+      setIsGameOver(true);
     }
-  }
+  };
 
   const cells = coords.map(z => {
     const setIsRevealed = (localRevealMap = revealMap) => {
       localRevealMap = localRevealMap.set(z, true);
 
       if (counts.get(z) === 0) {
-        const zeros = neighbouringZeros(z, coords, counts)
-        const frontier = neighboursForAll(zeros, coords)
-        const reveal = zeros.union(frontier)
-        localRevealMap = localRevealMap.merge(mapToValue(reveal, true))
+        const zeros = neighbouringZeros(z, coords, counts);
+        const frontier = neighboursForAll(zeros, coords);
+        const reveal = zeros.union(frontier);
+        localRevealMap = localRevealMap.merge(mapToValue(reveal, true));
       }
 
       setRevealMap(localRevealMap);
-      checkGameOver(localRevealMap, flagMap)
+      checkGameOver(localRevealMap, flagMap);
     };
 
     const setIsFlagged = (value, localFlagMap = flagMap) => {
       localFlagMap = localFlagMap.set(z, value);
 
       setFlagMap(localFlagMap);
-      checkGameOver(revealMap, localFlagMap)
+      checkGameOver(revealMap, localFlagMap);
     };
 
     return (

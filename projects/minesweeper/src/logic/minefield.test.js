@@ -108,6 +108,8 @@ describe('Neighbours', () => {
       [List([0, 3]), 0],
     ]);
     const ns = neighbouringZeros(List([0, 0]), range2d(1, 4), counts);
-    expect(ns).toEqual(Set([List([0, 0]), List([0, 1]), List([0, 2]), List([0, 3])]));
+    expect(ns).toEqual(
+      Set([List([0, 0]), List([0, 1]), List([0, 2]), List([0, 3])])
+    );
   });
 });
