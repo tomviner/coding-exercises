@@ -2,12 +2,15 @@
     height: 100%;
     float: left;
     box-sizing: border-box;
-    border: 5px solid grey;
-    background-color: lightgrey;
+    border: 2px solid darkgrey;
+    background-color: white;
+    font-weight: bold;
+    vertical-align: middle;
+    padding-top: 5px;
 }
 
 .cell.isRevealed {
-    background-color: white;
+    background-color: grey;
 }
 
 .cell.correct {
@@ -17,3 +20,5 @@
 .cell.incorrect {
     background-color: red;
 }
+
+.cell.m1 {

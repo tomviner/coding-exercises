@@ -37,19 +37,26 @@ function Cell(props) {
 
   let content,
     correct = false,
-    incorrect = false;
+    incorrect = false,
+    mineClass = {};
 
   if (isRevealed || isGameOver) {
-    content = isMine ? '💣' : mineCount;
+    if (isMine) {
+      content = '💣'
+    } else {
+      content = mineCount || '';
+      mineClass[`m${mineCount}`] = true;
+    }
     if (isGameOver) {
       correct = isFlagged && isMine;
       incorrect = isFlagged !== isMine;
     }
   } else {
-    content = isFlagged ? '🚩' : '?';
+    content = isFlagged ? '🚩' : '';
   }
 
-  const classNames = getClsNames({ isRevealed, correct, incorrect }, 'cell');
+
+  const classNames = getClsNames({ isRevealed, correct, incorrect, ...mineClass }, 'cell');
   const style = { width: cellSize, height: cellSize };
 
   return (
