@@ -7,7 +7,6 @@ import { neighbouringZeros, neighboursForAll } from '../logic/minefield';
 import './board.css';
 
 function Board(props) {
-  console.log('render Board');
   const {
     width,
     height,

@@ -17,10 +17,6 @@ function Cell(props) {
     setGameState,
     z,
   } = props;
-  if (z === List([0, 0])) {
-    console.log('render Cell. isRevealed', isRevealed);
-  }
-
   const onClick = e => {
     if (!gameState && !isFlagged) {
       setIsRevealed();

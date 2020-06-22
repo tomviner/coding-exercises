@@ -8,7 +8,6 @@ import { gameStates, stateToName } from '../utils/constants';
 import './game.css';
 
 function Game(props) {
-  console.log('render Game');
   const [width, setWidth] = useState(9);
   const [gameState, setGameState] = useState(gameStates.active);
   const [mineProb, setMineProb] = useState(0.1);
