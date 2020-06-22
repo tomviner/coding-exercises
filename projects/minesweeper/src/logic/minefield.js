@@ -6,7 +6,7 @@ export const generateField = (width, height, mineProb) => {
 
   const mineMap = mapToFunction(coords, _ => rand(mineProb));
 
-  // When outside the boundary it'c `undefined || 0`
+  // When outside the boundary it's `undefined || 0`
   const isMine = z => mineMap.get(z) || 0;
 
   const countAround = z => sum(neighbours(z, coords).map(isMine));
@@ -14,8 +14,8 @@ export const generateField = (width, height, mineProb) => {
   const countMap = mapToFunction(coords, countAround);
 
   return {
-    mines: mineMap,
-    counts: countMap,
+    mineMap,
+    countMap,
   };
 };
 
@@ -37,7 +37,7 @@ export const neighbours = (z, coords) =>
 export const neighboursForAll = (zs, coords) =>
   Set(zs.flatMap(c => neighbours(c, coords)));
 
-export const neighbouringZeros = (z, coords, counts) => {
+export const neighbouringZeros = (z, coords, countMap) => {
   let fronteer = Set([z]);
   let toReveal = Set();
   let lastFrontier;
@@ -48,7 +48,7 @@ export const neighbouringZeros = (z, coords, counts) => {
 
     fronteer = neighboursForAll(lastFrontier, coords)
       .filterNot(c => toReveal.includes(c))
-      .filter(c => counts.get(c) === 0);
+      .filter(c => countMap.get(c) === 0);
     toReveal = toReveal.union(fronteer);
   }
   return toReveal;

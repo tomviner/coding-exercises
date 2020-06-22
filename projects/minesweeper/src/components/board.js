@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { range2d, mapToValue } from '../utils/utils';
-import { cellSize } from '../utils/constants';
+import { cellSize, gameStates } from '../utils/constants';
 import Cell from './cell';
 import { neighbouringZeros, neighboursForAll } from '../logic/minefield';
 import './board.css';
@@ -11,14 +11,14 @@ function Board(props) {
   const {
     width,
     height,
-    mines,
-    counts,
+    mineMap,
+    countMap,
     revealMap,
     setRevealMap,
     flagMap,
     setFlagMap,
-    isGameOver,
-    setIsGameOver,
+    gameState,
+    setGameState,
   } = props;
 
   const coords = range2d(width, height);
@@ -27,23 +27,32 @@ function Board(props) {
     const untouched = coords.filter(c => !(flagMap.get(c) || revealMap.get(c)));
 
     if (untouched.size === 0) {
-      setIsGameOver(true);
+      setGameState(gameStates.won);
     }
   };
 
   const cells = coords.map(z => {
-    const setIsRevealed = (localRevealMap = revealMap) => {
+    const setIsRevealed = (
+      localRevealMap = revealMap,
+      localFlagMap = flagMap
+    ) => {
       localRevealMap = localRevealMap.set(z, true);
 
-      if (counts.get(z) === 0) {
-        const zeros = neighbouringZeros(z, coords, counts);
+      if (countMap.get(z) === 0) {
+        const zeros = neighbouringZeros(z, coords, countMap);
         const frontier = neighboursForAll(zeros, coords);
         const reveal = zeros.union(frontier);
         localRevealMap = localRevealMap.merge(mapToValue(reveal, true));
+        // unflag any cells included in the cascading reveal
+        localFlagMap = localFlagMap.mapEntries(([c, flagged]) => [
+          c,
+          flagged && !reveal.has(c),
+        ]);
       }
 
       setRevealMap(localRevealMap);
-      checkGameOver(localRevealMap, flagMap);
+      setFlagMap(localFlagMap);
+      checkGameOver(localRevealMap, localFlagMap);
     };
 
     const setIsFlagged = (value, localFlagMap = flagMap) => {
@@ -55,14 +64,14 @@ function Board(props) {
 
     return (
       <Cell
-        isMine={mines.get(z)}
-        mineCount={counts.get(z)}
+        isMine={mineMap.get(z)}
+        mineCount={countMap.get(z)}
         isRevealed={revealMap.get(z)}
         setIsRevealed={setIsRevealed}
         isFlagged={flagMap.get(z)}
         setIsFlagged={setIsFlagged}
-        isGameOver={isGameOver}
-        setIsGameOver={setIsGameOver}
+        gameState={gameState}
+        setGameState={setGameState}
         revealMap={revealMap}
         key={z}
         z={z}

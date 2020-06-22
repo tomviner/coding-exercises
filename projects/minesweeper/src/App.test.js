@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders cells', () => {
   const { getAllByText } = render(<App />);
-  const cells = getAllByText('?');
+  const cells = getAllByText('go');
   cells.forEach(cell => expect(cell).toBeInTheDocument());
 });

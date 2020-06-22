@@ -2,6 +2,7 @@ import React from 'react';
 import { getClsNames } from '../utils/utils';
 import { cellSize } from '../utils/constants';
 import { List } from 'immutable';
+import { gameStates } from '../utils/constants';
 import './cell.css';
 
 function Cell(props) {
@@ -12,8 +13,8 @@ function Cell(props) {
     setIsRevealed,
     isFlagged,
     setIsFlagged,
-    isGameOver,
-    setIsGameOver,
+    gameState,
+    setGameState,
     z,
   } = props;
   if (z === List([0, 0])) {
@@ -21,10 +22,10 @@ function Cell(props) {
   }
 
   const onClick = e => {
-    if (!isGameOver && !isFlagged) {
+    if (!gameState && !isFlagged) {
       setIsRevealed();
       if (isMine) {
-        setIsGameOver(true);
+        setGameState(gameStates.lost);
       }
     }
     e.preventDefault();
@@ -40,14 +41,14 @@ function Cell(props) {
     incorrect = false,
     mineClass = {};
 
-  if (isRevealed || isGameOver) {
+  if (isRevealed || gameState) {
     if (isMine) {
-      content = '💣'
+      content = '💣';
     } else {
       content = mineCount || '';
       mineClass[`m${mineCount}`] = true;
     }
-    if (isGameOver) {
+    if (gameState) {
       correct = isFlagged && isMine;
       incorrect = isFlagged !== isMine;
     }
@@ -55,8 +56,10 @@ function Cell(props) {
     content = isFlagged ? '🚩' : '';
   }
 
-
-  const classNames = getClsNames({ isRevealed, correct, incorrect, ...mineClass }, 'cell');
+  const classNames = getClsNames(
+    { isRevealed, correct, incorrect, isFlagged, isMine, ...mineClass },
+    'cell'
+  );
   const style = { width: cellSize, height: cellSize };
 
   return (

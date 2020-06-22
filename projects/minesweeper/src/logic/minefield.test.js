@@ -11,30 +11,30 @@ import {
 import { range2d } from '../utils/utils';
 
 describe('minefield generation', () => {
-  test('generateField small field safe from mines', () => {
+  test('generateField small field safe from mineMap', () => {
     expect(generateField(1, 1, 0)).toEqual({
-      mines: Map([[List([0, 0]), false]]),
-      counts: Map([[List([0, 0]), 0]]),
+      mineMap: Map([[List([0, 0]), false]]),
+      countMap: Map([[List([0, 0]), 0]]),
     });
   });
 
-  test('generateField small field full of mines', () => {
+  test('generateField small field full of mineMap', () => {
     expect(generateField(1, 1, 1)).toEqual({
-      mines: Map([[List([0, 0]), true]]),
-      counts: Map([[List([0, 0]), 0]]),
+      mineMap: Map([[List([0, 0]), true]]),
+      countMap: Map([[List([0, 0]), 0]]),
     });
   });
 
   test('generateField medium field with one mine', () => {
     mockRandom([0.001, 0.999, 0.999, 0.999]);
     expect(generateField(2, 2, 0.5)).toEqual({
-      mines: Map([
+      mineMap: Map([
         [List([0, 0]), true],
         [List([0, 1]), false],
         [List([1, 0]), false],
         [List([1, 1]), false],
       ]),
-      counts: Map([
+      countMap: Map([
         [List([0, 0]), 0],
         [List([0, 1]), 1],
         [List([1, 0]), 1],
@@ -44,16 +44,16 @@ describe('minefield generation', () => {
     resetMockRandom();
   });
 
-  test('generateField medium field with three mines', () => {
+  test('generateField medium field with three mineMap', () => {
     mockRandom([0.001, 0.001, 0.001, 0.999]);
     expect(generateField(2, 2, 0.5)).toEqual({
-      mines: Map([
+      mineMap: Map([
         [List([0, 0]), true],
         [List([0, 1]), true],
         [List([1, 0]), true],
         [List([1, 1]), false],
       ]),
-      counts: Map([
+      countMap: Map([
         [List([0, 0]), 2],
         [List([0, 1]), 2],
         [List([1, 0]), 2],
@@ -90,24 +90,24 @@ describe('Neighbours', () => {
   });
 
   test('neighbouringZeros 2 x 2', () => {
-    const counts = Map([
+    const countMap = Map([
       [List([0, 0]), 1],
       [List([0, 1]), 0],
       [List([1, 0]), 0],
       [List([1, 1]), 0],
     ]);
-    const ns = neighbouringZeros(List([0, 0]), range2d(2, 2), counts);
+    const ns = neighbouringZeros(List([0, 0]), range2d(2, 2), countMap);
     expect(ns).toEqual(Set([List([1, 0]), List([0, 1]), List([1, 1])]));
   });
 
   test('neighbouringZeros 1 x 4', () => {
-    const counts = Map([
+    const countMap = Map([
       [List([0, 0]), 0],
       [List([0, 1]), 0],
       [List([0, 2]), 0],
       [List([0, 3]), 0],
     ]);
-    const ns = neighbouringZeros(List([0, 0]), range2d(1, 4), counts);
+    const ns = neighbouringZeros(List([0, 0]), range2d(1, 4), countMap);
     expect(ns).toEqual(
       Set([List([0, 0]), List([0, 1]), List([0, 2]), List([0, 3])])
     );

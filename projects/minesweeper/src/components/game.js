@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 import Board from './board';
+import Score from './score';
 import { generateField, getBoolMap } from '../logic/minefield';
 import { sum } from '../utils/utils';
+import { gameStates, stateToName } from '../utils/constants';
 import './game.css';
 
 function Game(props) {
   console.log('render Game');
   const [width, setWidth] = useState(9);
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [gameState, setGameState] = useState(gameStates.active);
   const [mineProb, setMineProb] = useState(0.1);
 
   const height = width;
 
   const createNewMaps = () => generateField(width, height, mineProb);
-  const [{ mines, counts }, setMaps] = useState(createNewMaps);
+  const [{ mineMap, countMap }, setMaps] = useState(createNewMaps);
 
   const createNewBoolMap = () => getBoolMap(width, height);
   const [revealMap, setRevealMap] = useState(createNewBoolMap);
@@ -25,10 +27,6 @@ function Game(props) {
     setRevealMap(getBoolMap(width, height));
     setFlagMap(getBoolMap(width, height));
   }, [width, height, mineProb]);
-
-  const gameOverButton = e => {
-    setIsGameOver(!isGameOver);
-  };
 
   const widthIncButton = e => {
     setWidth(width + 1);
@@ -51,44 +49,52 @@ function Game(props) {
   };
 
   const newGameButton = e => {
-    setIsGameOver(false);
+    setGameState(gameStates.active);
     setMaps(createNewMaps);
     setRevealMap(createNewBoolMap);
     setFlagMap(createNewBoolMap);
   };
 
+  const mineCount = sum(mineMap.valueSeq());
+  const flagCount = sum(flagMap.valueSeq());
+  const minesLeft = mineCount - flagCount;
+
   return (
-    <div>
-      <div>
-        Size: <button onClick={widthDecButton}>-</button>
-        {width}
-        <button onClick={widthIncButton}>+</button>
-      </div>
-      <div>
-        Mines density: <button onClick={mineProbDecButton}>-</button>
-        {mineProb}
-        <button onClick={mineProbIncButton}>+</button>
-      </div>
-      <div>Mines: {sum(mines.valueSeq())}</div>
-      <div>
-        Gameover:{' '}
-        <button onClick={gameOverButton}>{isGameOver.toString()}</button>
-      </div>
-      <div>
-        New game: <button onClick={newGameButton}>go</button>
-      </div>
+    <div className="container">
+      <Score
+        gameState={gameState}
+        minesLeft={minesLeft}
+        newGameButton={newGameButton}
+      />
       <Board
         width={width}
         height={height}
-        mines={mines}
-        counts={counts}
+        mineMap={mineMap}
+        countMap={countMap}
         revealMap={revealMap}
         setRevealMap={setRevealMap}
         flagMap={flagMap}
         setFlagMap={setFlagMap}
-        isGameOver={isGameOver}
-        setIsGameOver={setIsGameOver}
+        gameState={gameState}
+        setGameState={setGameState}
       />
+      <div className="controls">
+        <div>
+          Size: <button onClick={widthDecButton}>-</button>
+          {width}
+          <button onClick={widthIncButton}>+</button>
+        </div>
+        <div>
+          Mines density: <button onClick={mineProbDecButton}>-</button>
+          {mineProb}
+          <button onClick={mineProbIncButton}>+</button>
+        </div>
+        <div>Mines: {mineCount}</div>
+        <div>State: {stateToName(gameState)}</div>
+        <div>
+          New game:<button onClick={newGameButton}>go</button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -22,3 +22,33 @@
 }
 
 .cell.m1 {
+    color: red;
+}
+
+.cell.m2 {
+    color: orange;
+}
+
+.cell.m3 {
+    color: yellow;
+}
+
+.cell.m4 {
+    color: #80ff0000;
+}
+
+.cell.m5 {
+    color: green;
+}
+
+.cell.m6 {
+    color: #00ff80;
+}
+
+.cell.m7 {
+    color: #00ffff;
+}
+
+.cell.m8 {
+    color: #0080ff;
+}
