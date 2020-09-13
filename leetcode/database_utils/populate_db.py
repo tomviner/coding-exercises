@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import os
 
 from sqlite_utils import Database
 
@@ -24,14 +25,19 @@ def get_fks(columns):
 
 
 def get_db(path="data.db"):
+    os.remove(path)
     conn = sqlite3.connect(path)
     return Database(conn)
 
 
 def populate(db, data):
+    table_fks = []
     for table_name, rows, fks in data:
         table = db[table_name]
         table.insert_all(rows, truncate=True)
+        table_fks.append((table, fks))
+
+    for table, fks in table_fks:
         for fk in fks:
             table.add_foreign_key(f"{fk}Id", fk, "Id")
 
