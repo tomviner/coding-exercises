@@ -1,11 +1,12 @@
 import sqlite3
 import json
 import os
+from pathlib import Path
 
 from sqlite_utils import Database
 
 
-def get_table_data(path='testcase.json'):
+def get_table_data(path):
     data = json.load(open(path))
     all_rows = data['rows']
     for table_name, columns in data['headers'].items():
@@ -24,10 +25,19 @@ def get_fks(columns):
             yield target
 
 
-def get_db(path="data.db"):
-    os.remove(path)
+def get_db(path=Path("data.db")):
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        pass
     conn = sqlite3.connect(path)
     return Database(conn)
+
+
+def get_paths():
+    for path in Path().glob('testcase*.json'):
+        db_name = str(path).replace('testcase', 'data')
+        yield path, path.with_name(db_name).with_suffix('.db')
 
 
 def populate(db, data):
@@ -43,6 +53,7 @@ def populate(db, data):
 
 
 if __name__ == "__main__":
-    db = get_db()
-    data = get_table_data()
-    populate(db, data)
+    for data_path, db_path in get_paths():
+        data = get_table_data(data_path)
+        db = get_db(db_path)
+        populate(db, data)
