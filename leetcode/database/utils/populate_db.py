@@ -1,6 +1,5 @@
 import sqlite3
 import json
-import os
 from pathlib import Path
 
 from sqlite_utils import Database
@@ -57,3 +56,6 @@ if __name__ == "__main__":
         data = get_table_data(data_path)
         db = get_db(db_path)
         populate(db, data)
+        print('---')
+        for line in db.conn.iterdump():
+            print(line)
